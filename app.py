@@ -18,25 +18,25 @@ usernames = [user for user in st.secrets["credential"]["usernames"].keys()]
 
 # 取得投注資訊DataFrame
 def get_bet_data(sheet):
-  members = sheet.col_values(1)[4:29]  # 姓名 A5:A29
-  members_bet = sheet.col_values(2)[4:29]  # 投注金額 B5:B29
-  members_paid = sheet.col_values(5)[4:29]  # 已繳金額 E5:E29
-  members_credit = sheet.col_values(6)[4:29]  # 可抵金 F5:F29
-  members_accum_arrears = sheet.col_values(7)[4:29]  # 累積未繳金額 G5:G29
+  source = sheet.get_all_values()
 
-  lotter_type = sheet.acell('G1').value  # 取得彩券種類
-  end_time =  sheet.acell('B1').value  # 取得結束下注時間
-  remain_time = sheet.acell('B2').value  # 取得收單資訊
-  draw_date = sheet.acell('B3').value  # 取得開獎日期
-  estimated_prize = int(sheet.acell('D3').value.replace(',', ''))  # 取得預估頭獎獎金
-  co_info = sheet.acell('A31:G31').value + sheet.acell('A32:G32').value  # 取得合資訊息
-  probability = sheet.acell('I30').value  # 取得開出機率
+  lotter_type = source[0][6]
+  end_time = source[0][1]
+  remain_time = source[1][1]
+  draw_date = source[2][1]
+  estimated_prize = int(source[2][3].replace(',', ''))
+  co_info = source[30][0] + source[31][0]
+  probability = source[29][8]
 
-  df = pd.DataFrame({"姓名": members, "投注金額": members_bet, "已繳金額":members_paid, "可抵金":members_credit,"累積未繳金額":members_accum_arrears})
-  df.index = [i+1 for i in range(len(members))]
+  col_index = [0, 1, 4, 5, 6]
+  member_index = [i for i in range(4,29)]
+  columns = [source[3][i] for i in col_index]
+  members = [[source[m][i] for i in col_index ] for m in member_index]
+  index = [i for i in range(1,len(members)+1)]
+
+  df = pd.DataFrame(members, index=index, columns=columns)
   source_data = {"df":df, "lotter_type":lotter_type, "end_time":end_time, "remain_time":remain_time, "draw_date":draw_date, "estimated_prize":estimated_prize, "co_info":co_info, "probability":probability}
   return source_data
-
 
 ## 取得會員資訊
 def get_member_info(df, name, column):
