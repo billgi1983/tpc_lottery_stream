@@ -171,7 +171,7 @@ def main_page():
     st.title(f"您預估分的頭獎金額為：{format(st.session_state.source_data['df'].loc[st.session_state.source_data['df'].姓名==name, '預估分得金額'].values[0], ',')}")
     fig = px.bar(st.session_state.source_data["df"],x='投注金額',y='姓名', text='預估分得金額', orientation='h')
     fig.update_xaxes(range=[0, 2100])
-    fig.update_yaxes(automargin=True)
+    fig.update_yaxes(autorange=False, range = list(0,27), fixedrange=True,)
     fig.update_traces(textposition="outside")
     st.plotly_chart(fig, use_container_width = True)
 
