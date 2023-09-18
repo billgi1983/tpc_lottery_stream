@@ -89,7 +89,7 @@ def login_page():
   lg_left, lg_middle, lg_right = st.columns((3, 2, 3))
   with lg_middle:
     st.title("登入頁面")
-    username = st.text_input("請輸入工號")
+    username = st.text_input("請輸入識別碼")
     password = st.text_input("請輸入密碼", type="password")
     login_button = st.button("登入")
 
