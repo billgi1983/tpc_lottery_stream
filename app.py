@@ -25,11 +25,11 @@ def get_bet_data(sheet):
   remain_time = source[1][1]
   draw_date = source[2][1]
   estimated_prize = int(source[2][3].replace(',', ''))
-  co_info = source[31][0] + source[32][0]
-  probability = source[30][8]
+  co_info = source[31][0] + source[32][0]  # 新增成員需修改
+  probability = source[30][8]  # 新增成員需修改
 
-  col_index = [0, 1, 4, 5, 6]
-  member_index = [i for i in range(4,30)]
+  col_index = [0, 1, 4, 5, 6, 7]
+  member_index = [i for i in range(4,30)]  # 新增成員需修改
   columns = [source[3][i] for i in col_index]
   members = [[source[m][i] for i in col_index ] for m in member_index]
   index = [i for i in range(1,len(members)+1)]
@@ -39,8 +39,8 @@ def get_bet_data(sheet):
   return source_data
 
 ## 取得會員資訊
-def get_member_info(df, name, column):
-  return df.loc[df.姓名==name, column].values[0]
+def get_member_info(df, username, column):
+  return df.loc[df.識別碼==username, column].values[0]
 
 
 ## 更新個人投注金額
@@ -98,9 +98,9 @@ def login_page():
         st.success("Loading")
         st.session_state.login = True
         st.session_state.username = username
-        st.session_state.name = st.secrets["credential"]["usernames"][username]["name"]
+        st.session_state.name = get_member_info(st.session_state.source_data["df"], st.session_state.username, "姓名")
         st.session_state.source_data = get_bet_data(sheet_1)
-        st.session_state.bet = int(get_member_info(st.session_state.source_data["df"], st.session_state.name, "投注金額"))
+        st.session_state.bet = int(get_member_info(st.session_state.source_data["df"], st.session_state.username, "投注金額"))
         set_img()
         st.experimental_rerun()
       else:
@@ -121,9 +121,9 @@ def main_page():
   name = st.session_state.name
   row = st.secrets["credential"]["usernames"][st.session_state.username]["row"]  # 寫入投注金額時，取得使用者列號用
 
-  credit = get_member_info(st.session_state.source_data["df"], name, "可抵金")
-  accum_arrears = get_member_info(st.session_state.source_data["df"], name, "累積未繳金額")
-  paid = get_member_info(st.session_state.source_data["df"], name, "已繳金額")
+  credit = get_member_info(st.session_state.source_data["df"], st.session_state.username, "可抵金")
+  accum_arrears = get_member_info(st.session_state.source_data["df"], st.session_state.username, "累積未繳金額")
+  paid = get_member_info(st.session_state.source_data["df"], st.session_state.username, "已繳金額")
 
 
   # front
