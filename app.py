@@ -98,8 +98,8 @@ def login_page():
         st.success("Loading")
         st.session_state.login = True
         st.session_state.username = username
-        st.session_state.name = get_member_info(st.session_state.source_data["df"], st.session_state.username, "姓名")
         st.session_state.source_data = get_bet_data(sheet_1)
+        st.session_state.name = get_member_info(st.session_state.source_data["df"], st.session_state.username, "姓名")
         st.session_state.bet = int(get_member_info(st.session_state.source_data["df"], st.session_state.username, "投注金額"))
         set_img()
         st.experimental_rerun()
