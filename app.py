@@ -204,6 +204,14 @@ def main():
     # 側邊欄的顯示狀態
     initial_sidebar_state="collapsed") # expanded or auto(預設)
 
+  hide_streamlit_style = """
+            <style>
+            [data-testid="stToolbar"] {visibility: hidden !important;}
+            footer {visibility: hidden !important;}
+            </style>
+            """
+  st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
   if not st.session_state.login:
     login_page()
   else:
