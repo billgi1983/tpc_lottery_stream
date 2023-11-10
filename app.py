@@ -25,11 +25,11 @@ def get_bet_data(sheet):
   remain_time = source[1][1]
   draw_date = source[2][1]
   estimated_prize = int(source[2][3].replace(',', ''))
-  co_info = source[32][0] + source[33][0]  # 新增成員需修改
-  probability = source[31][8]  # 新增成員需修改
+  co_info = source[33][0] + source[34][0]  # 新增成員需修改
+  probability = source[32][8]  # 新增成員需修改
 
   col_index = [0, 1, 4, 5, 6, 7]
-  member_index = [i for i in range(4,31)]  # 新增成員需修改
+  member_index = [i for i in range(4,32)]  # 新增成員需修改
   columns = [source[3][i] for i in col_index]
   members = [[source[m][i] for i in col_index ] for m in member_index]
   index = [i for i in range(1,len(members)+1)]
